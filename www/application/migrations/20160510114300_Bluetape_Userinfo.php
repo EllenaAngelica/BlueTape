@@ -22,17 +22,6 @@ class Migration_Bluetape_Userinfo extends CI_Migration {
         $this->dbforge->add_key('email', TRUE);
         $this->dbforge->create_table('Bluetape_Userinfo');
 
-        $modifyfields = array(
-            'requestByEmail' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '128'
-            ),
-            'answeredByEmail' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '128'
-            )
-        );
-        $this->dbforge->modify_column('Transkrip', $modifyfields);
         $this->dbforge->drop_column('Transkrip', 'requestByName');
     }
 

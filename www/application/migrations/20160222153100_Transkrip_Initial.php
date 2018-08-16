@@ -9,7 +9,7 @@ class Migration_Transkrip_Initial extends CI_Migration {
         $fields = array(
             'requestByEmail' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '256'
+                'constraint' => '128'
             ),
             'requestByName' => array(
                 'type' => 'VARCHAR',
@@ -29,7 +29,7 @@ class Migration_Transkrip_Initial extends CI_Migration {
             ),
             'answeredByEmail' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '256',
+                'constraint' => '128',
                 'null' => TRUE,
             ),
             'answeredDateTime' => array(

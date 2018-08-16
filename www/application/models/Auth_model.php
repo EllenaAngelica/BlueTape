@@ -74,11 +74,23 @@ class Auth_model extends CI_Model {
             throw new Exception("Email $email tidak memiliki hak akses!");
         }
         $this->load->database();
-        $this->db->replace('Bluetape_Userinfo', array(
-            'email' => $email,
-            'name' => $name,
-            'lastUpdate' => strftime('%Y-%m-%d %H:%M:%S')
+        $query = $this->db->get_where('Bluetape_Userinfo', array(
+            'email' => $email
         ));
+        if($query->row() === NULL){
+            $this->db->insert('Bluetape_Userinfo', array(
+                'email' => $email,
+                'name' => $name,
+                'lastUpdate' => strftime('%Y-%m-%d %H:%M:%S')
+            ));
+        }
+        else{
+            $this->db->where('email', $email);
+            $this->db->update('Bluetape_Userinfo', array(
+                'name' => $name,
+                'lastUpdate' => strftime('%Y-%m-%d %H:%M:%S')
+            ));
+        }
         $this->session->set_userdata('auth', array(
             'email' => $email,
             'name' => $name,
