@@ -8,8 +8,8 @@ $config['module-names'] = array(
     'PerubahanKuliahRequest' => 'Perubahan Kuliah',
     'PerubahanKuliahManage' => 'Manajemen Perubahan Kuliah',
 	'EntriJadwalDosen' => 'Entri Jadwal Dosen',
-	'LihatJadwalDosen' => 'Lihat Jadwal Dosen'
-	
+	'LihatJadwalDosen' => 'Lihat Jadwal Dosen',
+	'Pengumuman' => 'Pengumuman'
 );
 
 $config['modules'] = array(
@@ -18,7 +18,8 @@ $config['modules'] = array(
     'PerubahanKuliahRequest' => array('root', 'staf.unpar'),
     'PerubahanKuliahManage' => array('root', 'tu.ftis'),
 	'EntriJadwalDosen' => array('root', 'dosen.informatika' ),
-	'LihatJadwalDosen' => array('root', 'mahasiswa.informatika', 'dosen.informatika')
+	'LihatJadwalDosen' => array('root', 'mahasiswa.informatika', 'dosen.informatika'),
+	'Pengumuman' => array('root')
 );
 
 $config['roles'] = array(
