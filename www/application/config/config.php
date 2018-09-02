@@ -514,3 +514,7 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 $config['sess_save_path'] = sys_get_temp_dir();
+
+$config['user_id'] = $ENV['User_Id'];
+
+$config['topic_name'] = $_ENV['Topic_Name'];

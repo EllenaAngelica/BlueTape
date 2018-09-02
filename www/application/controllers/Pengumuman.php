@@ -1,5 +1,4 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pengumuman extends CI_Controller {
@@ -56,7 +55,7 @@ class Pengumuman extends CI_Controller {
 				$i++;
 			}
 			echo '</br>';
-			echo '</br><a href="http://bluetape.herokuapp.com/Pengumuman">Back to BlueTape</a>';
+			echo '</br><a href="'.base_url('/Pengumuman').'">Back to BlueTape</a>';
 		} catch (Exception $e) {
             $this->session->set_flashdata('error', $e->getMessage());
         }
