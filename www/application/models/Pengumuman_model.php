@@ -22,22 +22,15 @@ class Pengumuman_model extends CI_Model {
 
 		$inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Gmail: ' . imap_last_error());
 		
-		$emails = imap_search($inbox,'ALL');
+		$num = imap_num_msg($imap); 
 
-		if($emails) {
-			rsort($emails);
-			foreach($emails as $email_number) {
-				$overview = imap_fetch_overview($inbox,$email_number,0);
-				$message = imap_fetchbody($inbox,$email_number,2);
-				
-				echo "Status : " . ($overview[0]->seen ? 'read' : 'unread') . "\n";
-				echo "Subject : " . $overview[0]->subject . "\n";
-				echo "From : " . $overview[0]->from . "\n";
-				echo "Date : " . $overview[0]->date . "\n";
-				echo "Body : " . $message . "\n";
-			}
-		} 
+		 //if there is a message in your inbox 
+		 if( $num >0 ) { 
+			  //read that mail recently arrived 
+			  echo imap_qprint(imap_body($imap, $num)); 
+		 } 
 
-		imap_close($inbox);
+		 //close the stream 
+		 imap_close($imap); 
 	}
 }
