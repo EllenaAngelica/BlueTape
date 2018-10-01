@@ -22,15 +22,15 @@ class Pengumuman_model extends CI_Model {
 
 		$inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Gmail: ' . imap_last_error());
 		
-		$num = imap_num_msg($imap); 
+		$num = imap_num_msg($inbox); 
 
 		 //if there is a message in your inbox 
 		 if( $num >0 ) { 
 			  //read that mail recently arrived 
-			  echo imap_qprint(imap_body($imap, $num)); 
+			  echo imap_qprint(imap_body($inbox, $num)); 
 		 } 
 
 		 //close the stream 
-		 imap_close($imap); 
+		 imap_close($inbix); 
 	}
 }
