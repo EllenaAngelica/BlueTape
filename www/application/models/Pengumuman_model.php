@@ -31,6 +31,6 @@ class Pengumuman_model extends CI_Model {
 		 } 
 
 		 //close the stream 
-		 imap_close($inbix); 
+		 imap_close($inbox); 
 	}
 }
