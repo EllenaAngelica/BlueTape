@@ -17,7 +17,6 @@ class Auth_model extends CI_Model {
         $this->client->setRedirectUri($this->config->item('google-redirecturi'));
         $this->client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $this->client->addScope('https://www.googleapis.com/auth/userinfo.profile');
-		$this->client->addScope('https://mail.google.com/');
     }
 
     /**
@@ -98,29 +97,6 @@ class Auth_model extends CI_Model {
             'roles' => $roles,
             'modules' => $modules
         ));
-
-        // Untuk Gmail
-        $userId = $this->config->item('user_id');;
-		$access_token = $_SESSION['token']['access_token'];
-		$topic_name = $this->config->item('topic_name');
-		// POST request    
-		$ch = curl_init('https://www.googleapis.com/gmail/v1/users/' . $userId . '/watch');
-
-		curl_setopt_array($ch, array(
-			CURLOPT_POST => TRUE,
-			CURLOPT_RETURNTRANSFER => TRUE,
-			CURLOPT_HTTPHEADER => array(
-				'Authorization: Bearer ' . $access_token,
-				'Content-Type: application/json'
-			),
-			CURLOPT_POSTFIELDS => json_encode(array(
-				'labelIds' => ["INBOX"],
-				'topicName' => $topic_name
-			))
-		));
-		$reply = curl_exec($ch);
-		$historyId = explode('"',$reply)[3];
-		$_SESSION['hId'] = $historyId;
     }
 
     public function getUserInfo() {

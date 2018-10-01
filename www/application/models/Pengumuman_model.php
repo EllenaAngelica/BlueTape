@@ -15,80 +15,45 @@ class Pengumuman_model extends CI_Model {
         $this->load->config('modules');
     }
 	
-	public function generateHistoryId(){
-		$userId = 'me';
-		$access_token = $_SESSION['token']['access_token'];
-		$topic_name = 'projects/bluetape-201512/topics/pengumuman';
-		// POST request    
-		$ch = curl_init('https://www.googleapis.com/gmail/v1/users/' . $userId . '/watch');
+	public function checkEmail(){
+		$hostname = '{imap.gmail.com:993/imap/ssl}INBOX';
+		$username = $_ENV['ANNOUNCEMENT_EMAIL'];
+		$password = $_ENV['ANNOUNCEMENT_PASSWORD'];
 
-		curl_setopt_array($ch, array(
-			CURLOPT_POST => TRUE,
-			CURLOPT_RETURNTRANSFER => TRUE,
-			CURLOPT_HTTPHEADER => array(
-				'Authorization: Bearer ' . $access_token,
-				'Content-Type: application/json'
-			),
-			CURLOPT_POSTFIELDS => json_encode(array(
-				'labelIds' => ["INBOX"],
-				'topicName' => $topic_name
-			))
-		));
-		$reply = curl_exec($ch);
-		$historyId = explode('"',$reply)[3];
-		$_SESSION['hId'] = $historyId;
-	}
-	
-	public function refreshNotification(){
-		$userId = 'me';
-		$access_token = $_SESSION['token']['access_token'];
+		$inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Gmail: ' . imap_last_error());
 		
-		$ch2 = curl_init('https://www.googleapis.com/gmail/v1/users/' . $userId . '/history?historyTypes=messageAdded&labelId=INBOX&startHistoryId=' . $_SESSION['hId']);
-		curl_setopt_array($ch2, array(
-			CURLOPT_RETURNTRANSFER => TRUE,
-			CURLOPT_HTTPHEADER => array(
-				'Authorization: Bearer ' . $access_token,
-				'Content-Type: application/json'
-			)
-		));
+		$emails = imap_search($inbox,'ALL');
+
+		if($emails) {
 			
-		$reply2 = curl_exec($ch2);
-		curl_close($ch2);
-		return $reply2;
-	}
-	
-	public function getMessageList(){
-		$userId = 'me';
-		$access_token = $_SESSION['token']['access_token'];
-		
-		$ch3 = curl_init('https://www.googleapis.com/gmail/v1/users/' . $userId . '/messages?includeSpamTrash=false&labelIds=INBOX&maxResults=5');
-		curl_setopt_array($ch3, array(
-			CURLOPT_RETURNTRANSFER => TRUE,
-			CURLOPT_HTTPHEADER => array(
-				'Authorization: Bearer ' . $access_token,
-				'Content-Type: application/json'
-			)
-		));
+			/* begin output var */
+			$output = '';
 			
-		$reply3 = curl_exec($ch3);
-		curl_close($ch3);
-		return $reply3;
-	}
-	
-	public function getInformation($mId){
-		$userId = 'me';
-		$access_token = $_SESSION['token']['access_token'];
-		
-		$ch2 = curl_init('https://www.googleapis.com/gmail/v1/users/' . $userId . '/messages/' . $mId . '?format=metadata&metadataHeaders=Delivered-To&metadataHeaders=From&metadataHeaders=Date&metadataHeaders=Subject');
-		curl_setopt_array($ch2, array(
-			CURLOPT_RETURNTRANSFER => TRUE,
-			CURLOPT_HTTPHEADER => array(
-				'Authorization: Bearer ' . $access_token,
-				'Content-Type: application/json'
-			)
-		));
+			/* put the newest emails on top */
+			rsort($emails);
 			
-		$reply2 = curl_exec($ch2);
-		return $reply2;
+			/* for every email... */
+			foreach($emails as $email_number) {
+				
+				/* get information specific to this email */
+				$overview = imap_fetch_overview($inbox,$email_number,0);
+				$message = imap_fetchbody($inbox,$email_number,2);
+				
+				/* output the email header information */
+				$output.= '<div class="toggler '.($overview[0]->seen ? 'read' : 'unread').'">';
+				$output.= '<span class="subject">'.$overview[0]->subject.'</span> ';
+				$output.= '<span class="from">'.$overview[0]->from.'</span>';
+				$output.= '<span class="date">on '.$overview[0]->date.'</span>';
+				$output.= '</div>';
+				
+				/* output the email body */
+				$output.= '<div class="body">'.$message.'</div>';
+			}
+			
+			echo $output;
+		} 
+
+		/* close the connection */
+		imap_close($inbox);
 	}
 }
