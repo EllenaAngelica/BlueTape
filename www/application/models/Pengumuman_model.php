@@ -37,11 +37,11 @@ class Pengumuman_model extends CI_Model {
 					}
 				}
 			
-				echo "Status : " . ($overview[0]->seen ? 'read' : 'unread') . "\n";
-				echo "Subject : " . $overview[0]->subject . "\n";
-				echo "From : " . $overview[0]->from . "\n";
-				echo "Date : " . $overview[0]->date . "\n";
-				echo "Body : " . $message . "\n";
+				echo "Status : " . ($overview[0]->seen ? 'read' : 'unread') . "<br>";
+				echo "Subject : " . $overview[0]->subject . "<br>";
+				echo "From : " . $overview[0]->from . "<br>";
+				echo "Date : " . $overview[0]->date . "<br>";
+				echo "Body : " . $message . "<br>";
 			}
 		} 
 
