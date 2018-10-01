@@ -16,7 +16,7 @@ class Pengumuman_model extends CI_Model {
     }
 	
 	public function checkEmail(){
-		$hostname = '{imap.gmail.com:993/imap/ssl}INBOX';
+		$hostname = $_ENV['HOSTNAME_INCOMING_EMAIL'];
 		$username = $_ENV['ANNOUNCEMENT_EMAIL'];
 		$password = $_ENV['ANNOUNCEMENT_PASSWORD'];
 
