@@ -13,6 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<h5>Push Notification Pengumuman</h5>
 					<p>Untuk mendapatkan push notification dari email Anda, tekan tombol di bawah</p>
 					<form method="POST" action="/Pengumuman/pushNotification">
+						<input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>" />
 						<input type="submit" class="button" value="Push Notification">
 					</form>
 				</div>
