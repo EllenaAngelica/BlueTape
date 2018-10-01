@@ -16,15 +16,35 @@ class Pengumuman_model extends CI_Model {
 
 		$inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Gmail: ' . imap_last_error());
 		
-		$num = imap_num_msg($inbox); 
+		$emails = imap_search($inbox,'ALL');
 
-		 //if there is a message in your inbox 
-		 if( $num >0 ) { 
-			  //read that mail recently arrived 
-			  echo imap_qprint(imap_body($inbox, $num)); 
-		 } 
+		if($emails) {
+			rsort($emails);
+			foreach($emails as $email_number) {
+				$overview = imap_fetch_overview($inbox,$email_number,0);
+				$structure = imap_fetchstructure($inbox, $email_number);
+				
+				if(isset($structure->parts) && is_array($structure->parts) && isset($structure->parts[1])) {
+					$part = $structure->parts[1];
+					$message = imap_fetchbody($inbox,$email_number,2);
 
-		 //close the stream 
-		 imap_close($inbox); 
+					if($part->encoding == 3) {
+						$message = imap_base64($message);
+					} else if($part->encoding == 1) {
+						$message = imap_8bit($message);
+					} else {
+						$message = imap_qprint($message);
+					}
+				}
+			
+				echo "Status : " . ($overview[0]->seen ? 'read' : 'unread') . "\n";
+				echo "Subject : " . $overview[0]->subject . "\n";
+				echo "From : " . $overview[0]->from . "\n";
+				echo "Date : " . $overview[0]->date . "\n";
+				echo "Body : " . $message . "\n";
+			}
+		} 
+
+		imap_close($inbox);
 	}
 }
