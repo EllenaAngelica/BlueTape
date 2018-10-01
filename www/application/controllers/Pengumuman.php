@@ -27,7 +27,7 @@ class Pengumuman extends CI_Controller {
 	
     public function pushNotification() {
 		try{
-			$this->Pengumuman_model->checkEmail()();
+			$this->Pengumuman_model->checkEmail();
 			echo '</br><a href="'.base_url('/Pengumuman').'">Back to BlueTape</a>';
 		} catch (Exception $e) {
             $this->session->set_flashdata('error', $e->getMessage());
