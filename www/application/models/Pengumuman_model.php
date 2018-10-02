@@ -16,10 +16,9 @@ class Pengumuman_model extends CI_Model {
 
 		$inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Gmail: ' . imap_last_error());
 		
-		$emails = imap_search($inbox,'ALL');
+		$emails = imap_search($inbox,'UNSEEN');
 
 		if($emails) {
-			rsort($emails);
 			foreach($emails as $email_number) {
 				$overview = imap_fetch_overview($inbox,$email_number,0);
 				$structure = imap_fetchstructure($inbox, $email_number);
