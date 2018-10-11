@@ -36,9 +36,9 @@ class Migration_Pengumuman extends CI_Migration {
         );
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
-		$this->db->set('slug', 'id', FALSE);
 		$this->dbforge->create_table('Pengumuman');
-		$this->db->query('ALTER TABLE Pengumuman ADD FOREIGN KEY (email_id) REFERENCES Pengirim_Terverifikasi(id)');
+		$this->db->set('slug', 'id', FALSE);
+		$this->db->update('Pengumuman');
     }
 
     public function down() { 
