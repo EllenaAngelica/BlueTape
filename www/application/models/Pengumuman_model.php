@@ -53,6 +53,8 @@ class Pengumuman_model extends CI_Model {
 				$i++;
 			}
 		} 
+		
+		$errs = imap_errors();
 
 		imap_close($inbox);
 		
