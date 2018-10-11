@@ -49,7 +49,7 @@ class Pengumuman_model extends CI_Model {
 				$new_emails[$i]['date'] = date("Y-m-d H:i:s", $header->udate);
 				$new_emails[$i]['subject'] = $header->subject;
 				$new_emails[$i]['body'] = $message;
-				$new_emails[$i]['attachement_exist'] = $attachement_exist;
+				$new_emails[$i]['attachement_exist'] = $attachment_exist;
 				$i++;
 			}
 		} 
