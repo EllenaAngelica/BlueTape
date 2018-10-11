@@ -20,17 +20,32 @@ class Pengumuman extends CI_Controller {
         // Retrieve logged in user data
         $userInfo = $this->Auth_model->getUserInfo();
 		
+		$this->db->select();
+		$this->db->order_by('id', 'desc');
+		$query = $this->db->get('Pengumuman');
+		$announcements = $query->result_array();
+		foreach ($announcements as &$announcement) {
+			$announcement['url'] = "/pengumuman/read/" . $announcement['slug'];
+		}
+		
         $this->load->view('Pengumuman/main', array(
             'currentModule' => get_class()
         ));
     }
 	
-    public function pushNotification() {
-		try{
-			$this->Pengumuman_model->checkEmail();
-			echo '</br><a href="'.base_url('/Pengumuman').'">Back to BlueTape</a>';
-		} catch (Exception $e) {
-            $this->session->set_flashdata('error', $e->getMessage());
-        }
-    }
+	public function read($slug){		
+		$this->db->where('slug', $slug);
+		$this->db->select('*');
+		$this->db->from('Pengumuman');
+		$this->db->join('Pengirim_Terverifikasi', 'Pengirim_Terverifikasi.id = Pengumuman.email_id');
+		$query = $this->db->get();
+		$pengumuman= $query->row_array();
+		if ($pengumuman === NULL) {
+			show_404();
+			exit;
+		}
+		$this->load->view('pengumuman', array(
+			'pengumuman' => $pengumuman
+		));
+	}
 }
