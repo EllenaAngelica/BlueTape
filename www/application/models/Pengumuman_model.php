@@ -54,7 +54,7 @@ class Pengumuman_model extends CI_Model {
 			}
 		} 
 		
-		$errs = imap_errors();
+		//$errs = imap_errors();
 
 		imap_close($inbox);
 		
