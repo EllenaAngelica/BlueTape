@@ -28,9 +28,7 @@ class Pengumuman extends CI_Controller {
 			$announcement['url'] = "/pengumuman/read/" . $announcement['slug'];
 		}
 		
-        $this->load->view('Pengumuman/main', array(
-            'currentModule' => get_class()
-        ));
+		$this->page(1);
     }
 	
 	public function read($slug){		
@@ -44,8 +42,33 @@ class Pengumuman extends CI_Controller {
 			show_404();
 			exit;
 		}
-		$this->load->view('pengumuman', array(
+		$this->load->view('Pengumuman/read', array(
+			'currentModule' => get_class(),
 			'pengumuman' => $pengumuman
 		));
+	}
+	
+	public function page($page){
+		$this->pagination($page,2,(($page-1)*2));
+	}
+	
+	public function pagination($page,$limit,$i){
+		$jumlahPengumuman = $this->db->count_all('Pengumuman');
+		$this->db->select('*');
+		$this->db->order_by('waktu_terkirim', 'desc');
+		$this->db->from('Pengumuman');
+		$this->db->join('Pengirim_Terverifikasi', 'Pengirim_Terverifikasi.id = Pengumuman.email_id');
+		$this->db->limit($limit,$i);
+		$query = $this->db->get();
+		$pengumumans = $query->result_array();
+		$currentPage = $page;
+		$pengumumanPerPage = $limit;
+        $this->load->view('Pengumuman/main', array(
+            'currentModule' => get_class(),
+			'jumlahPengumuman' => $jumlahPengumuman,
+			'pengumumans' => $pengumumans,
+			'currentPage' => $currentPage,
+			'pengumumanPerPage' => $pengumumanPerPage
+        ));
 	}
 }
