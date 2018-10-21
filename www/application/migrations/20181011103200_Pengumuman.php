@@ -22,7 +22,8 @@ class Migration_Pengumuman extends CI_Migration {
             ),
 			'isi' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '256'
+                'constraint' => '256',
+				'null' => TRUE
             ),
 			'ketersediaan_lampiran' => array(
 				'type' => 'VARCHAR',
@@ -31,14 +32,13 @@ class Migration_Pengumuman extends CI_Migration {
 			'slug' => [
 				'type' => 'VARCHAR',
 				'constraint' => '256',
-				'after' => 'title'
+				'after' => 'subjek'
 			]
         );
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
 		$this->dbforge->create_table('Pengumuman');
-		$this->db->set('slug', 'id', FALSE);
-		$this->db->update('Pengumuman');
+		$this->db->query('ALTER TABLE "Pengumuman" ADD CONSTRAINT pengumuman_iefk_1 FOREIGN KEY (email_id) REFERENCES "Pengirim_Terverifikasi" (id)');
     }
 
     public function down() { 
