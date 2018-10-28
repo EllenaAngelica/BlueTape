@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Pengumuman extends CI_Migration {
+class Migration_Pengumuman_initial extends CI_Migration {
 
     public function up() {
         $fields = array(
@@ -10,10 +10,15 @@ class Migration_Pengumuman extends CI_Migration {
                 'type' => 'int',
 				 'auto_increment' => TRUE
             ),
-            'email_id' => array(
-                'type' => 'int'
+            'namaPengirim' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '256'
             ),
-			'waktu_terkirim' => array(
+			'emailPengirim' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '256'
+            ),
+			'waktuTerkirim' => array(
                 'type' => 'timestamp'
             ),
 			'subjek' => array(
@@ -21,24 +26,17 @@ class Migration_Pengumuman extends CI_Migration {
                 'constraint' => '256'
             ),
 			'isi' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '256',
+                'type' => 'TEXT',
 				'null' => TRUE
             ),
-			'ketersediaan_lampiran' => array(
+			'ketersediaanLampiran' => array(
 				'type' => 'VARCHAR',
                 'constraint' => '1'
-			),
-			'slug' => [
-				'type' => 'VARCHAR',
-				'constraint' => '256',
-				'after' => 'subjek'
-			]
+			)
         );
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
 		$this->dbforge->create_table('Pengumuman');
-		$this->db->query('ALTER TABLE "Pengumuman" ADD CONSTRAINT pengumuman_iefk_1 FOREIGN KEY (email_id) REFERENCES "Pengirim_Terverifikasi" (id)');
     }
 
     public function down() { 
