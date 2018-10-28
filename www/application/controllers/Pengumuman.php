@@ -25,17 +25,16 @@ class Pengumuman extends CI_Controller {
 		$query = $this->db->get('Pengumuman');
 		$announcements = $query->result_array();
 		foreach ($announcements as &$announcement) {
-			$announcement['url'] = "/pengumuman/read/" . $announcement['slug'];
+			$announcement['url'] = "/pengumuman/read/" . $announcement['id'];
 		}
 		
 		$this->page(1);
     }
 	
-	public function read($slug){		
-		$this->db->where('slug', $slug);
+	public function read($id){		
+		$this->db->where('id', $id);
 		$this->db->select('*');
 		$this->db->from('Pengumuman');
-		$this->db->join('Pengirim_Terverifikasi', 'Pengirim_Terverifikasi.id = Pengumuman.email_id');
 		$query = $this->db->get();
 		$pengumuman= $query->row_array();
 		if ($pengumuman === NULL) {
@@ -49,15 +48,15 @@ class Pengumuman extends CI_Controller {
 	}
 	
 	public function page($page){
-		$this->pagination($page,2,(($page-1)*2));
+		$limit = 2;
+		$this->pagination($page,$limit,(($page-1)*$limit));
 	}
 	
 	public function pagination($page,$limit,$i){
 		$jumlahPengumuman = $this->db->count_all('Pengumuman');
 		$this->db->select('*');
-		$this->db->order_by('waktu_terkirim', 'desc');
+		$this->db->order_by('waktuTerkirim', 'desc');
 		$this->db->from('Pengumuman');
-		$this->db->join('Pengirim_Terverifikasi', 'Pengirim_Terverifikasi.id = Pengumuman.email_id');
 		$this->db->limit($limit,$i);
 		$query = $this->db->get();
 		$pengumumans = $query->result_array();

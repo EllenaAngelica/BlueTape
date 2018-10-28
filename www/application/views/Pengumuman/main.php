@@ -17,9 +17,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						foreach($pengumumans as $pengumuman):
 				?>
 							<div class="callout">
-								<h3><a href=<?="/pengumuman/read/" . $pengumuman['slug']?> ><?=$pengumuman['subjek']?></a></h3>
+								<h3><a href=<?="/pengumuman/read/" . $pengumuman['id']?> ><?=$pengumuman['subjek']?></a></h3>
 								<p>
-									by : <?=$pengumuman['nama']?> (<?=$pengumuman['email']?>) on <?=date("D,d M Y H:i:s", strtotime($pengumuman['waktu_terkirim']))?>
+									by : <?= $pengumuman['namaPengirim']?> (<?= $pengumuman['emailPengirim']?>) on <?=date("D,d M Y H:i:s", strtotime($pengumuman['waktuTerkirim']))?>
 								</p>
 							</div>
 				<?php

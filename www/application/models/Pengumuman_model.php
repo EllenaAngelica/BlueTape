@@ -10,7 +10,7 @@ class Pengumuman_model extends CI_Model {
     }
 	
 	public function checkEmail(){
-		$new_emails = null;
+		$newEmails = null;
 		
 		$hostname = getEnv('HOSTNAME_INCOMING_EMAIL');
 		$username = getEnv('ANNOUNCEMENT_EMAIL');
@@ -22,19 +22,26 @@ class Pengumuman_model extends CI_Model {
 
 		if($emails) {
 			$i = 0;
-			foreach($emails as $email_number) {
-				$header = imap_headerinfo($inbox,$email_number);
+			foreach($emails as $emailNumber) {
+				$header = imap_headerinfo($inbox,$emailNumber);
 				$from = $header->from;
 				foreach($from as $id => $object){
 					$fromaddress = $object->mailbox . "@" . $object->host;
 				}
 				
-				$structure = imap_fetchstructure($inbox, $email_number);
+				$structure = imap_fetchstructure($inbox, $emailNumber);
 				
 				if(isset($structure->parts) && is_array($structure->parts) && isset($structure->parts[1])) {
+					$attachmentExist = 'N';
+					$partNumber = '2';
+					if(isset($structure->parts[0]->parts)){
+						$attachmentExist = 'Y';
+						$partNumber = '1.2';
+					}
 					$part = $structure->parts[1];
-					$message = imap_fetchbody($inbox,$email_number,2);
+					$message = imap_fetchbody($inbox,$emailNumber,$partNumber);
 
+					print_r($structure);
 					if($part->encoding == 3) {
 						$message = imap_base64($message);
 					} else if($part->encoding == 1) {
@@ -42,47 +49,43 @@ class Pengumuman_model extends CI_Model {
 					} else {
 						$message = imap_qprint($message);
 					}
-					
-					if(isset($structure->parts[0]->parts)){
-						$attachment_exist = 'Y';
-					}else{
-						$attachment_exist = 'N';
-					}
 				}
 				
-				$new_emails[$i]['email_from'] = $fromaddress;
-				$new_emails[$i]['date'] = date("Y-m-d H:i:s", $header->udate);
-				$new_emails[$i]['subject'] = $header->subject;
-				$new_emails[$i]['body'] = $message;
-				$new_emails[$i]['attachement_exist'] = $attachment_exist;
+				$newEmails[$i]['emailFrom'] = $fromaddress;
+				$newEmails[$i]['from'] = $header->fromaddress;
+				$newEmails[$i]['date'] = date("Y-m-d H:i:s", $header->udate);
+				$newEmails[$i]['subject'] = $header->subject;
+				$newEmails[$i]['body'] = $message;
+				$newEmails[$i]['attachementExist'] = $attachmentExist;
 				$i++;
 			}
 		} 
 		
-		$errs = imap_errors();
+		$errors = imap_errors();
 
 		imap_close($inbox);
 		
-		return $new_emails;
+		return $newEmails;
 	}
 	
-	public function proceedEmail($new_email){
-		$email_id = null;
-		
-		$this->db->select('id');
-		$query = $this->db->get_where('Pengirim_Terverifikasi', ['email'=>$new_email['email_from']],1);
-		if($query->num_rows() == 1){
-			$email_id = $query->row()->id;
+	public function proceedEmail($newEmail){
+		$this->config->load('pengumuman');
+		$terverifikasi = 0;
+		$daftarEmailTerverifikasi = $this->config->item('pengirimTerverifikasi');
+		foreach($daftarEmailTerverifikasi as $emailTerverifikasi){
+			if($newEmail['emailFrom'] == $emailTerverifikasi){
+				$terverifikasi = 1;
+			}
 		}
 		
-		if($email_id!=null){
+		if($terverifikasi == 1){
 			$this->db->insert('Pengumuman', array(
-				'email_id' => $email_id,
-				'waktu_terkirim' => $new_email['date'],
-				'subjek' => $new_email['subject'],
-				'isi' => $new_email['body'],
-				'ketersediaan_lampiran' => $new_email['attachement_exist'],
-				'slug' =>'email_id'
+				'namaPengirim' => $newEmail['from'],
+				'emailPengirim' => $newEmail['emailFrom'],
+				'waktuTerkirim' => $newEmail['date'],
+				'subjek' => $newEmail['subject'],
+				'isi' => $newEmail['body'],
+				'ketersediaanLampiran' => $newEmail['attachementExist']
 			));
 		}
 	}

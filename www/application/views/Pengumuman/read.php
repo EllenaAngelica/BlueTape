@@ -12,11 +12,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="callout">
 					<h3><?=$pengumuman['subjek']?></h3>
 					<p>
-						by : <?=$pengumuman['nama']?> (<?=$pengumuman['email']?>) on <?=date("D,d M Y H:i:s", strtotime($pengumuman['waktu_terkirim']))?>
+						by : <?= $pengumuman['namaPengirim']?> (<?= $pengumuman['emailPengirim']?>) on <?=date("D,d M Y H:i:s", strtotime($pengumuman['waktuTerkirim']))?>
 					</p>
 					<br><br>
 					<?= nl2br(nl2br($pengumuman['isi'])); ?>
-					<?php if($pengumuman['ketersediaan_lampiran'] == 'Y'):?>
+					<?php if($pengumuman['ketersediaanLampiran'] == 'Y'):?>
 							<br><br>
 							<p>
 								*) Pengumuman ini memiliki lampiran, silahkan memeriksa langsung email student Anda untuk mengunduhnya.
