@@ -6,10 +6,10 @@ class Cron extends CI_Controller {
 	public function daily() {
 		try {
 			$this->load->model('Pengumuman_model');
-			$new_emails = $this->Pengumuman_model->checkEmail();
-			if($new_emails != null){
-				foreach($new_emails as $new_email):
-					$this->Pengumuman_model->proceedEmail($new_email);
+			$newEmails = $this->Pengumuman_model->checkEmail();
+			if($newEmails != null){
+				foreach($newEmails as $newEmail):
+					$this->Pengumuman_model->proceedEmail($newEmail);
 				endforeach;
 			}
 		} catch (Exception $e) {
