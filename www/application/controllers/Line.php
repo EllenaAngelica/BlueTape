@@ -31,8 +31,6 @@ class Line extends CI_Controller {
 			}
 		}
 		http_response_code(200);
-		$res->write('OK');
-        return $res;
 	}
 }
 
