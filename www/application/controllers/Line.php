@@ -12,5 +12,6 @@ class Line extends CI_Controller {
 		catch(Exception $e){
 			http_response_code(500);
 		}
+	}
 }
 
