@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Line extends CI_Controller {
 
-	public function webhook($event){
+	public function webhook(){
 		$channelSecret = getenv('LINE_BOT_CHANNEL_SECRET');
 		$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(getenv('LINE_BOT_CHANNEL_TOKEN'));
 		$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $channelSecret]);
@@ -26,6 +26,13 @@ class Line extends CI_Controller {
 			http_response_code(400); 
 			//"Invalid event request"
         }
+		
+		foreach ($events as $event) {
+			if ($event instanceof FollowEvent) {
+				$this->bot->replyText($this->followEvent->getReplyToken(), 'Got followed event');
+			}
+		}
+		http_response_code(200);
 	}
 }
 
