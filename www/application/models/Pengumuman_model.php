@@ -41,7 +41,6 @@ class Pengumuman_model extends CI_Model {
 					$part = $structure->parts[1];
 					$message = imap_fetchbody($inbox,$emailNumber,$partNumber);
 
-					print_r($structure);
 					if($part->encoding == 3) {
 						$message = imap_base64($message);
 					} else if($part->encoding == 1) {
@@ -87,6 +86,12 @@ class Pengumuman_model extends CI_Model {
 				'isi' => $newEmail['body'],
 				'ketersediaanLampiran' => $newEmail['attachementExist']
 			));
+			$justInserted = $this->db->select("*")->order_by('id',"desc")->limit(1)->get('Pengumuman')->row();
+			$id = $justInserted->id;
+			
+			$message = "Ada pengumuman baru! Silahkan klik link ini untuk melihatnya : " . base_url() . "pengumuman/read/" . $id;
+			$this->load->model('Line_model');
+			$this->Line_model->pushMessage($message);
 		}
 	}
 }
