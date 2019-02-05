@@ -30,23 +30,18 @@ class Pengumuman_model extends CI_Model {
 				}
 				
 				$structure = imap_fetchstructure($inbox, $emailNumber);
-				
+
 				if(isset($structure->parts) && is_array($structure->parts) && isset($structure->parts[1])) {
 					$attachmentExist = 'N';
-					$partNumber = '2';
+
 					if(isset($structure->parts[0]->parts)){
 						$attachmentExist = 'Y';
-						$partNumber = '1.2';
 					}
-					$part = $structure->parts[1];
-					$message = imap_fetchbody($inbox,$emailNumber,$partNumber);
 
-					if($part->encoding == 3) {
-						$message = imap_base64($message);
-					} else if($part->encoding == 1) {
-						$message = imap_8bit($message);
-					} else {
-						$message = imap_qprint($message);
+					$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, 1.2));
+
+					if (empty($bodymsg)) {
+						$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, 1));
 					}
 				}
 				
@@ -54,8 +49,8 @@ class Pengumuman_model extends CI_Model {
 				$newEmails[$i]['from'] = $header->fromaddress;
 				$newEmails[$i]['date'] = date("Y-m-d H:i:s", $header->udate);
 				$newEmails[$i]['subject'] = $header->subject;
-				$newEmails[$i]['body'] = $message;
-				$newEmails[$i]['attachementExist'] = $attachmentExist;
+				$newEmails[$i]['body'] = $bodymsg;
+				$newEmails[$i]['attachmentExist'] = $attachmentExist;
 				$i++;
 			}
 		} 
@@ -84,14 +79,14 @@ class Pengumuman_model extends CI_Model {
 				'waktuTerkirim' => $newEmail['date'],
 				'subjek' => $newEmail['subject'],
 				'isi' => $newEmail['body'],
-				'ketersediaanLampiran' => $newEmail['attachementExist']
+				'ketersediaanLampiran' => $newEmail['attachmentExist']
 			));
 			$justInserted = $this->db->select("*")->order_by('id',"desc")->limit(1)->get('Pengumuman')->row();
 			$id = $justInserted->id;
 			
-			$message = "Ada pengumuman baru! Silahkan klik link ini untuk melihatnya : " . base_url() . "pengumuman/read/" . $id;
-			$this->load->model('Line_model');
-			$this->Line_model->pushMessage($message);
+			// $message = "Ada pengumuman baru! Silahkan klik link ini untuk melihatnya : " . base_url() . "pengumuman/read/" . $id;
+			// $this->load->model('Line_model');
+			// $this->Line_model->pushMessage($message);
 		}
 	}
 }
