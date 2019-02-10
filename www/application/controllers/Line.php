@@ -7,7 +7,7 @@ class Line extends CI_Controller {
 		try{
 			$this->load->model('Line_model');
 			
-			$xLineSignature = $_SERVER['HTTP_X-Line_Signature'];
+			$xLineSignature = $this->input->get_request_header('X-Line-Signature');
 			$httpPostRequestBody = file_get_contents('php://input');
 			
 			if (empty($signature)) {
