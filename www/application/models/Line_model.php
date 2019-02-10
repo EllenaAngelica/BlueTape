@@ -40,17 +40,11 @@ class Line_model extends CI_Model {
 		$this->bot = new \LINE\LINEBot($this->httpClient, ['channelSecret' => $this->channelSecret]);
 	}
 
-	private function validateSignature($xLineSignature, $httpRequestBody){
-		$hash = hash_hmac('sha256', $httpRequestBody, $this->channelSecret, true);
-		$signature = base64_encode($hash);
-		return hash_equals($signature, $xLineSignature);
-	}
-
-	public function proceedWebhook($xLineSignature, $httpRequestBody){
-		$valid = $this->validateSignature($xLineSignature, $httpRequestBody);
+	public function proceedWebhook($httpRequestBody, $xLineSignature){
+		$valid = $this->bot->validateSignature($httpRequestBody, $xLineSignature);
 		if($valid){
 			try{
-				$events = $this->bot->parseEventRequest($httpRequestBody, $xLineSignature[0]);
+				$events = $this->bot->parseEventRequest($httpRequestBody, $xLineSignature);
 
 				foreach ($events as $event) {
 					if ($event instanceof MessageEvent) {
