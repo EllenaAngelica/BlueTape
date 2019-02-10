@@ -5,7 +5,17 @@ class Line extends CI_Controller {
 
 	public function webhook(){
 		try{
-			$request = json_decode(file_get_contents('php://input'), true);
+			$this->load->model('Line_model');
+			
+			$xLineSignature = $_SERVER['HTTP_LINE_SIGNATURE'];
+			$httpPostRequestBody = file_get_contents('php://input');
+			
+			if (empty($signature)) {
+				http_response_code(400); // Bad Request, Signature is Missing
+			}
+			else{
+				$this->Pengumuman_model->proceedWebhook($xLineSignature, $httpRequestBody);
+			}
 
 			http_response_code(200);
 		}
