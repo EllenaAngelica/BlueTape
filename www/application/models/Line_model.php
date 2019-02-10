@@ -50,56 +50,56 @@ class Line_model extends CI_Model {
 		$valid = $this->validateSignature($xLineSignature, $httpRequestBody);
 		if($valid){
 			try{
-				$events = $this->bot->parseEventRequest($httpRequestBody, $xLineSignature);
+				$events = $this->bot->parseEventRequest($httpRequestBody, $xLineSignature[0]);
+
+				foreach ($events as $event) {
+					if ($event instanceof MessageEvent) {
+						if ($event instanceof TextMessage) {
+							
+						} elseif ($event instanceof StickerMessage) {
+							
+						} elseif ($event instanceof LocationMessage) {
+							
+						} elseif ($event instanceof ImageMessage) {
+							
+						} elseif ($event instanceof AudioMessage) {
+							
+						} elseif ($event instanceof VideoMessage) {
+							
+						} elseif ($event instanceof UnknownMessage) {
+							http_response_code(400); // Invalid event type
+						} else {
+							http_response_code(400); // Invalid event type
+						}
+					} elseif ($event instanceof UnfollowEvent) {
+						$id = $this->bot->getUserId();
+						$this->db->delete('Line_Followers', array('userId' => $id));
+					} elseif ($event instanceof FollowEvent) {
+						$this->db->insert('Line_Followers', array(
+							'userId' => $this->bot->getUserId()
+						));
+						$this->bot->replyText($event->getReplyToken(), 'Thank you for following me! XD');
+					} elseif ($event instanceof JoinEvent) {
+						
+					} elseif ($event instanceof LeaveEvent) {
+						
+					} elseif ($event instanceof PostbackEvent) {
+						
+					} elseif ($event instanceof BeaconDetectionEvent) {
+						
+					} elseif ($event instanceof AccountLinkEvent) {
+						
+					} elseif ($event instanceof UnknownEvent) {
+						http_response_code(400); // Invalid event type
+					} else {
+						http_response_code(400); // Invalid event type
+					}
+				}
 			} catch (InvalidSignatureException $e) {
 				http_response_code(400); // Invalid signature
 			} catch (InvalidEventRequestException $e) {
 				http_response_code(400); // Invalid event request
 			}
-
-			foreach ($events as $event) {
-                if ($event instanceof MessageEvent) {
-                    if ($event instanceof TextMessage) {
-                        
-                    } elseif ($event instanceof StickerMessage) {
-                        
-                    } elseif ($event instanceof LocationMessage) {
-                        
-                    } elseif ($event instanceof ImageMessage) {
-                        
-                    } elseif ($event instanceof AudioMessage) {
-                        
-                    } elseif ($event instanceof VideoMessage) {
-                        
-                    } elseif ($event instanceof UnknownMessage) {
-                        http_response_code(400); // Invalid event type
-                    } else {
-						http_response_code(400); // Invalid event type
-                    }
-                } elseif ($event instanceof UnfollowEvent) {
-					$id = $this->bot->getUserId();
-					$this->db->delete('Line_Followers', array('userId' => $id));
-                } elseif ($event instanceof FollowEvent) {
-					$this->db->insert('Line_Followers', array(
-						'userId' => $this->bot->getUserId()
-					));
-                    $this->bot->replyText($event->getReplyToken(), 'Thank you for following me! XD');
-                } elseif ($event instanceof JoinEvent) {
-                    
-                } elseif ($event instanceof LeaveEvent) {
-                    
-                } elseif ($event instanceof PostbackEvent) {
-                    
-                } elseif ($event instanceof BeaconDetectionEvent) {
-                    
-                } elseif ($event instanceof AccountLinkEvent) {
-                    
-                } elseif ($event instanceof UnknownEvent) {
-                    http_response_code(400); // Invalid event type
-                } else {
-					http_response_code(400); // Invalid event type
-                }
-            }
 		}
 	}
 	
