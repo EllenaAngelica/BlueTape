@@ -26,7 +26,7 @@ class Line extends CI_Controller {
 			}
 			else{
 				$this->load->model('Line_model');
-				$this->Pengumuman_model->proceedWebhook($httpRequestBody, $xLineSignature);
+				$this->Line_model->proceedWebhook($httpRequestBody, $xLineSignature);
 			}
 			http_response_code(200);
 		}
