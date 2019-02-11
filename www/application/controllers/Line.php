@@ -19,13 +19,13 @@ class Line extends CI_Controller {
 				exit();
 			}
 			
-			$this->load->model('Line_model');
+			$xLineSignature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
 			
 			if (empty($xLineSignature)) {
 				http_response_code(400); // Bad Request, Signature is Missing
 			}
 			else{
-				$xLineSignature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
+				$this->load->model('Line_model');
 				$this->Pengumuman_model->proceedWebhook($httpRequestBody, $xLineSignature);
 			}
 			http_response_code(200);
