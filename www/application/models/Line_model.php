@@ -66,11 +66,11 @@ class Line_model extends CI_Model {
 							http_response_code(400); // Invalid event type
 						}
 					} elseif ($event instanceof UnfollowEvent) {
-						$id = $this->bot->getUserId();
+						$id = $event->getUserId();
 						$this->db->delete('Line_Followers', array('userId' => $id));
 					} elseif ($event instanceof FollowEvent) {
 						$this->db->insert('Line_Followers', array(
-							'userId' => $this->bot->getUserId()
+							'userId' => $event->getUserId()
 						));
 						$this->bot->replyText($event->getReplyToken(), 'Thank you for following me! XD');
 					} elseif ($event instanceof JoinEvent) {
