@@ -6,7 +6,7 @@ class Migration_Line_Followers_initial extends CI_Migration {
 
     public function up() {
         $fields = array(
-            'id' => array(
+            'userId' => array(
                 'type' => 'VARCHAR',
                 'constraint' => '256'
             )
