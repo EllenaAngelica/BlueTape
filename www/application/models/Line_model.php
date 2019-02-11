@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 use LINE\LINEBot;
-use LINE\LINEBot\Constant\HTTPHeader;
+use LINE\LINEBot\HTTPClient;
 use LINE\LINEBot\Event\AccountLinkEvent;
 use LINE\LINEBot\Event\BeaconDetectionEvent;
 use LINE\LINEBot\Event\FollowEvent;
@@ -49,7 +49,7 @@ class Line_model extends CI_Model {
 				foreach ($events as $event) {
 					if ($event instanceof MessageEvent) {
 						if ($event instanceof TextMessage) {
-							
+							$this->bot->replyText($event->getReplyToken(), $event->getText());
 						} elseif ($event instanceof StickerMessage) {
 							
 						} elseif ($event instanceof LocationMessage) {
