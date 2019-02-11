@@ -27,8 +27,8 @@ class Line extends CI_Controller {
 			else{
 				$xLineSignature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
 				$this->Pengumuman_model->proceedWebhook($httpRequestBody, $xLineSignature);
-				http_response_code(200);
 			}
+			http_response_code(200);
 		}
 		catch(Exception $e){
 			http_response_code(500);
