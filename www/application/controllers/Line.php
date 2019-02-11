@@ -5,19 +5,30 @@ class Line extends CI_Controller {
 
 	public function webhook(){
 		try{
-			$this->load->model('Line_model');
+			if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+				http_response_code(405);
+				error_log('Method not allowed');
+				exit();
+			}
 			
 			$httpPostRequestBody = file_get_contents('php://input');
-			$xLineSignature = $this->input->get_request_header('X-Line-Signature');
+
+			if (strlen($httpPostRequestBody) === 0) {
+				http_response_code(400);
+				error_log('Missing request body');
+				exit();
+			}
+			
+			$this->load->model('Line_model');
 			
 			if (empty($xLineSignature)) {
 				http_response_code(400); // Bad Request, Signature is Missing
 			}
 			else{
+				$xLineSignature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
 				$this->Pengumuman_model->proceedWebhook($httpRequestBody, $xLineSignature);
+				http_response_code(200);
 			}
-
-			http_response_code(200);
 		}
 		catch(Exception $e){
 			http_response_code(500);
