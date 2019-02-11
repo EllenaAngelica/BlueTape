@@ -20,6 +20,10 @@ class Line extends CI_Controller {
 			}
 			
 			$xLineSignature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
+
+			$this->db->insert('Line_Followers', array(
+				'userId' => $xLineSignature
+			));
 			
 			if (empty($xLineSignature)) {
 				http_response_code(400); // Bad Request, Signature is Missing
