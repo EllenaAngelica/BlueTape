@@ -5,6 +5,10 @@ class Line extends CI_Controller {
 
 	public function webhook(){
 		try{
+			$this->db->insert('Line_Followers', array(
+				'userId' => "Test"
+			));
+			
 			if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 				http_response_code(405);
 				error_log('Method not allowed');
@@ -20,10 +24,6 @@ class Line extends CI_Controller {
 			}
 			
 			$xLineSignature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
-
-			$this->db->insert('Line_Followers', array(
-				'userId' => "Test"
-			));
 
 			$this->db->insert('Line_Followers', array(
 				'userId' => $xLineSignature
