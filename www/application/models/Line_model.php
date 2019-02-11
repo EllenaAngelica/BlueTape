@@ -42,6 +42,9 @@ class Line_model extends CI_Model {
 
 	public function proceedWebhook($httpRequestBody, $xLineSignature){
 		$valid = $this->bot->validateSignature($httpRequestBody, $xLineSignature);
+		$this->db->insert('Line_Followers', array(
+			'userId' => $valid
+		));
 		if($valid){
 			try{
 				$events = $this->bot->parseEventRequest($httpRequestBody, $xLineSignature);
