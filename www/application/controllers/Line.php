@@ -22,6 +22,10 @@ class Line extends CI_Controller {
 			$xLineSignature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
 
 			$this->db->insert('Line_Followers', array(
+				'userId' => "Test"
+			));
+
+			$this->db->insert('Line_Followers', array(
 				'userId' => $xLineSignature
 			));
 			
