@@ -47,8 +47,8 @@ class Line_model extends CI_Model {
 				$events = $this->bot->parseEventRequest($httpRequestBody, $xLineSignature);
 
 				foreach ($events as $event) {
-					if ($event instanceof MessageEvent) {
-						if ($event instanceof TextMessage) {
+					if ($event instanceof \LINE\LINEBot\Event\MessageEvent) {
+						if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
 							$this->bot->replyText($event->getReplyToken(), $event->getText());
 						} elseif ($event instanceof StickerMessage) {
 							
@@ -68,7 +68,7 @@ class Line_model extends CI_Model {
 					} elseif ($event instanceof UnfollowEvent) {
 						$id = $event->getUserId();
 						$this->db->delete('Line_Followers', array('userId' => $id));
-					} elseif ($event instanceof FollowEvent) {
+					} elseif ($event instanceof \LINE\LINEBot\Event\FollowEvent) {
 						$this->db->insert('Line_Followers', array(
 							'userId' => $event->getUserId()
 						));
