@@ -49,7 +49,7 @@ class Line_model extends CI_Model {
 				foreach ($events as $event) {
 					if ($event instanceof \LINE\LINEBot\Event\MessageEvent) {
 						if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-							$this->bot->replyText($event->getReplyToken(), $event->getText());
+							
 						} elseif ($event instanceof StickerMessage) {
 							
 						} elseif ($event instanceof LocationMessage) {
