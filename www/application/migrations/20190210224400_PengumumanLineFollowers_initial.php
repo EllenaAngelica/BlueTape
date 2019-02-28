@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Line_Followers_initial extends CI_Migration {
+class Migration_PengumumanLineFollowers_initial extends CI_Migration {
 
     public function up() {
         $fields = array(
@@ -13,7 +13,7 @@ class Migration_Line_Followers_initial extends CI_Migration {
         );
         $this->dbforge->add_field($fields);
         $this->dbforge->add_key('userId', TRUE);
-		$this->dbforge->create_table('Line_Followers');
+		$this->dbforge->create_table('PengumumanLineFollowers');
     }
 
     public function down() { 

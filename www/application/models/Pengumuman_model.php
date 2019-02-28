@@ -85,8 +85,8 @@ class Pengumuman_model extends CI_Model {
 			$id = $justInserted->id;
 			
 			$message = "Ada pengumuman baru! Silahkan klik link ini untuk melihatnya : " . base_url() . "pengumuman/read/" . $id;
-			$this->load->model('Line_model');
-			$this->Line_model->pushMessageToAllFollowers($message);
+			$this->load->model('Pengumuman_Line_model');
+			$this->Pengumuman_Line_model->pushMessageToAllFollowers($message);
 		}
 	}
 }

@@ -439,7 +439,7 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_regenerate' = Regenerate token on every submission
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
-if (stripos($_SERVER["REQUEST_URI"],'/Line/webhook') === FALSE) {
+if (stripos($_SERVER["REQUEST_URI"],'/PengumumanLine/webhook') === FALSE) {
     $config['csrf_protection'] = TRUE;
 }else{ 
     $config['csrf_protection'] 	= FALSE; 

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Line extends CI_Controller {
+class PengumumanLine extends CI_Controller {
 
 	public function webhook(){
 		try{			
@@ -25,8 +25,8 @@ class Line extends CI_Controller {
 				http_response_code(400); // Bad Request, Signature is Missing
 			}
 			else{
-				$this->load->model('Line_model');
-				$this->Line_model->proceedWebhook($httpPostRequestBody, $xLineSignature);
+				$this->load->model('Pengumuman_Line_model');
+				$this->Pengumuman_Line_model->proceedWebhook($httpPostRequestBody, $xLineSignature);
 			}
 			http_response_code(200);
 		}

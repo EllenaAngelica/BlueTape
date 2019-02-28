@@ -22,7 +22,7 @@ use LINE\LINEBot\Event\UnknownEvent;
 use LINE\LINEBot\Exception\InvalidEventRequestException;
 use LINE\LINEBot\Exception\InvalidSignatureException;
 
-class Line_model extends CI_Model {
+class Pengumuman_Line_model extends CI_Model {
 	private $channelAccessToken;
 	private $channelSecret;
 	private $httpClient;
@@ -67,9 +67,9 @@ class Line_model extends CI_Model {
 						}
 					} elseif ($event instanceof UnfollowEvent) {
 						$id = $event->getUserId();
-						$this->db->delete('Line_Followers', array('userId' => $id));
+						$this->db->delete('PengumumanLineFollowers', array('userId' => $id));
 					} elseif ($event instanceof \LINE\LINEBot\Event\FollowEvent) {
-						$this->db->insert('Line_Followers', array(
+						$this->db->insert('PengumumanLineFollowers', array(
 							'userId' => $event->getUserId()
 						));
 						$this->bot->replyText($event->getReplyToken(), 'Thank you for following me! XD');
@@ -99,7 +99,7 @@ class Line_model extends CI_Model {
 	
 	public function pushMessageToAllFollowers($text){
 		$tos = [];
-		$query = $this->db->get('Line_Followers');
+		$query = $this->db->get('PengumumanLineFollowers');
 		foreach ($query->result() as $row){
 			$tos[] = $row->userId;
 		}
