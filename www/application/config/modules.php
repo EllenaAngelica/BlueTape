@@ -19,7 +19,7 @@ $config['modules'] = array(
     'PerubahanKuliahManage' => array('root', 'tu.ftis'),
 	'EntriJadwalDosen' => array('root', 'dosen.informatika' ),
 	'LihatJadwalDosen' => array('root', 'mahasiswa.informatika', 'dosen.informatika'),
-	'Pengumuman' => array('root')
+	'Pengumuman' => array('root', 'mahasiswa.informatika', 'dosen.informatika')
 );
 
 $config['roles'] = array(
