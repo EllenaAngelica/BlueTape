@@ -65,6 +65,7 @@ class Pengumuman_model extends CI_Model {
 	}
 	
 	public function proceedEmail($newEmail){
+		$isPengumuman = false;
 		$this->config->load('pengumuman');
 		$terverifikasi = 0;
 		$daftarEmailTerverifikasi = $this->config->item('pengirimTerverifikasi');
@@ -75,6 +76,7 @@ class Pengumuman_model extends CI_Model {
 		}
 		
 		if($terverifikasi == 1){
+			$isPengumuman = true;
 			$this->db->insert('Pengumuman', array(
 				'namaPengirim' => $newEmail['from'],
 				'emailPengirim' => $newEmail['emailFrom'],
@@ -90,5 +92,6 @@ class Pengumuman_model extends CI_Model {
 			$this->load->model('Pengumuman_Line_model');
 			$this->Pengumuman_Line_model->pushMessageToAllFollowers($message);
 		}
+		return $isPengumuman;
 	}
 }
