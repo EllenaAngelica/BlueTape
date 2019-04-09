@@ -50,7 +50,7 @@ class Pengumuman extends CI_Controller {
 	}
 	
 	public function page($page){
-		$limit = 2;
+		$limit = 10;
 		$this->pagination($page,$limit,(($page-1)*$limit));
 	}
 	
