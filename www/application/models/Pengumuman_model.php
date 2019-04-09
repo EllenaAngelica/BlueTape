@@ -88,8 +88,8 @@ class Pengumuman_model extends CI_Model {
 			$justInserted = $this->db->select("*")->order_by('id',"desc")->limit(1)->get('Pengumuman')->row();
 			$id = $justInserted->id;
 			
-			$message = "Ada pengumuman baru! Silahkan klik link ini untuk melihatnya : " . base_url() . "pengumuman/read/" . $id;
 			$this->load->model('Pengumuman_Line_model');
+			$message = "Ada pengumuman baru dari " . $newEmail['from'] . " : '" . $newEmail['subject'] . "'. Silahkan klik link ini untuk melihatnya : " . base_url() . "pengumuman/read/" . $id;
 			$this->Pengumuman_Line_model->pushMessageToAllFollowers($message);
 		}
 		return $isPengumuman;
