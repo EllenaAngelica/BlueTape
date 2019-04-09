@@ -6,6 +6,8 @@ class Pengumuman extends CI_Controller {
     public function __construct() {
         parent::__construct();
         try {
+			$this->load->helper('url');
+			$this->session->set_userdata('redirect_url', current_url() );
             $this->Auth_model->checkModuleAllowed(get_class());
         } catch (Exception $ex) {
             $this->session->set_flashdata('error', $ex->getMessage());

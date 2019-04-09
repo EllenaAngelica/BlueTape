@@ -19,7 +19,12 @@ class Auth extends CI_Controller {
             if ($code !== NULL) {
                 $this->Auth_model->authenticateOauthCode($code);
                 $userInfo = $this->Auth_model->getUserInfo();
-                header('Location: /' . $userInfo['modules'][0]);
+                if($this->session->has_userdata('redirect_url')){
+                    redirect($this->session->userdata('redirect_url'));
+                }
+                else{
+                    header('Location: /' . $userInfo['modules'][0]);
+                }
             } else {
                 throw new Exception("Mohon login terlebih dahulu.");
             }
