@@ -25,6 +25,8 @@ class Pengumuman_model extends CI_Model {
 			foreach($emails as $emailNumber) {
 				$header = imap_headerinfo($inbox,$emailNumber);
 				$from = $header->from;
+				$bodymsg = '';
+				$attachmentExist = 'N';
 				foreach($from as $id => $object){
 					$fromaddress = $object->mailbox . "@" . $object->host;
 				}
