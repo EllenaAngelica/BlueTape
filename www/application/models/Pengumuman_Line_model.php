@@ -47,19 +47,19 @@ class Pengumuman_Line_model extends CI_Model {
 				$events = $this->bot->parseEventRequest($httpRequestBody, $xLineSignature);
 
 				foreach ($events as $event) {
-					if ($event instanceof \LINE\LINEBot\Event\MessageEvent) {
-						if ($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage) {
-							
+					if ($event instanceof MessageEvent) {
+						if ($event instanceof TextMessage) {
+							$this->bot->replyText($event->getReplyToken(), "Maaf, saat ini bot belum bisa membalas pesan Anda.");
 						} elseif ($event instanceof StickerMessage) {
-							
+							$this->bot->replyText($event->getReplyToken(), "Maaf, saat ini bot belum bisa membalas pesan Anda.");
 						} elseif ($event instanceof LocationMessage) {
-							
+							$this->bot->replyText($event->getReplyToken(), "Maaf, saat ini bot belum bisa membalas pesan Anda.");
 						} elseif ($event instanceof ImageMessage) {
-							
+							$this->bot->replyText($event->getReplyToken(), "Maaf, saat ini bot belum bisa membalas pesan Anda.");
 						} elseif ($event instanceof AudioMessage) {
-							
+							$this->bot->replyText($event->getReplyToken(), "Maaf, saat ini bot belum bisa membalas pesan Anda.");
 						} elseif ($event instanceof VideoMessage) {
-							
+							$this->bot->replyText($event->getReplyToken(), "Maaf, saat ini bot belum bisa membalas pesan Anda.");
 						} elseif ($event instanceof UnknownMessage) {
 							http_response_code(400); // Invalid event type
 						} else {
@@ -68,21 +68,21 @@ class Pengumuman_Line_model extends CI_Model {
 					} elseif ($event instanceof UnfollowEvent) {
 						$id = $event->getUserId();
 						$this->db->delete('PengumumanLineFollowers', array('userId' => $id));
-					} elseif ($event instanceof \LINE\LINEBot\Event\FollowEvent) {
+					} elseif ($event instanceof FollowEvent) {
 						$this->db->insert('PengumumanLineFollowers', array(
 							'userId' => $event->getUserId()
 						));
-						$this->bot->replyText($event->getReplyToken(), 'Thank you for following me! XD');
+						$this->bot->replyText($event->getReplyToken(), 'Terima kasih telah mengikuti akun ini. Pengumuman baru di Bluetape akan diberitahukan melalui akun ini.');
 					} elseif ($event instanceof JoinEvent) {
-						
+						// Not handled
 					} elseif ($event instanceof LeaveEvent) {
-						
+						// Not handled
 					} elseif ($event instanceof PostbackEvent) {
-						
+						// Not handled
 					} elseif ($event instanceof BeaconDetectionEvent) {
-						
+						// Not handled
 					} elseif ($event instanceof AccountLinkEvent) {
-						
+						// Not handled
 					} elseif ($event instanceof UnknownEvent) {
 						http_response_code(400); // Invalid event type
 					} else {
