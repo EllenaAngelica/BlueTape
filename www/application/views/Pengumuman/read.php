@@ -15,9 +15,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						by : <?= $pengumuman['namaPengirim']?> (<?= $pengumuman['emailPengirim']?>) on <?=date("D,d M Y H:i:s", strtotime($pengumuman['waktuTerkirim']))?>
 					</p>
 					<br><br>
+					<?php 
+						$startwith = '<div dir="ltr">';
+						if(substr( $pengumuman['isi'], 0, strlen($startwith) ) == $startwith){
+					?>
+					<?= $pengumuman['isi']; ?>
+					<?php
+						}
+						else{
+					?>
 					<?= nl2br(nl2br($pengumuman['isi'])); ?>
+					<?php
+						}
+					?>
+					<br><br>
 					<?php if($pengumuman['ketersediaanLampiran'] == 'Y'):?>
-							<br><br>
 							<p>
 								*) Pengumuman ini memiliki lampiran, silahkan memeriksa langsung email student Anda untuk mengunduhnya.
 							</p>
