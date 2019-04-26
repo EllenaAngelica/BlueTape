@@ -39,18 +39,27 @@ class Pengumuman_model extends CI_Model {
 							$parts1 = $structure->parts[1];
 							if(isset($parts1->disposition) && $parts1->disposition == "ATTACHMENT"){
 								$attachmentExist = 'Y';
-								$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, '1.2'));
-								if (empty($bodymsg)) {
+								$parts0 = $structure->parts[0];
+								if(isset($parts0->parts[1])){
+									$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, '1.2'));
+								}
+								else if(isset($parts0->parts[0])){
 									$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, '1.1'));
+								}
+								else{
+									$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, '1'));
 								}
 							}
 							else{
 								$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, '2'));
-								if (empty($bodymsg)) {
-									$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, '1'));
-								}
 							}
 						}
+						else{
+							$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, '1'));
+						}
+					}
+					else{
+						$bodymsg = imap_qprint(imap_fetchbody($inbox, $emailNumber, '1'));
 					}
 
 					if($fromaddress != null){

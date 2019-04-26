@@ -16,15 +16,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</p>
 					<br><br>
 					<?php 
-						$startwith = '<div dir="ltr">';
-						if(substr( $pengumuman['isi'], 0, strlen($startwith) ) == $startwith){
+						if(!strpos($pengumuman['isi'], "<div")){
 					?>
-					<?= $pengumuman['isi']; ?>
+							<?= nl2br(nl2br($pengumuman['isi'])); ?>
 					<?php
 						}
 						else{
 					?>
-					<?= nl2br(nl2br($pengumuman['isi'])); ?>
+							<?= $pengumuman['isi']; ?>
 					<?php
 						}
 					?>
